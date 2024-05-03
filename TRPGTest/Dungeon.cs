@@ -21,6 +21,7 @@ namespace TRPGTest
         public int monsterCount = 0;
         List<Monster> monsters; // 몬스터 리스트
         public Random rand = new Random();
+        QuestManager quest = new QuestManager();
         // 랜덤 몬스터 생성 메서드
         public Monster CreateRandomMonster()
         {
@@ -413,7 +414,6 @@ namespace TRPGTest
                 int gold = rand.Next(100, 1001);
                 Console.WriteLine($"골드를 {gold}G 얻었습니다!");
                 player.Gold += gold;
-                QuestManager quest = new QuestManager();
                 quest.MonsterDies(player);
                 Console.ReadKey();
 
@@ -523,7 +523,6 @@ namespace TRPGTest
                 int gold = rand.Next(100, 1001);
                 Console.WriteLine($"골드를 {gold}G 얻었습니다!");
                 player.Gold += gold;
-                QuestManager quest = new QuestManager();
                 quest.MonsterDies(player);
             }
             Console.ReadKey();
@@ -562,7 +561,6 @@ namespace TRPGTest
                     int gold = rand.Next(100, 1001);
                     Console.WriteLine($"골드를 {gold}G 얻었습니다!");
                     player.Gold += gold;
-                    QuestManager quest = new QuestManager();
                     quest.MonsterDies(player);
                 }
             }
