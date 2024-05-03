@@ -45,9 +45,8 @@ namespace TRPGTest
         {
             // 여기에 퀘스트를 추가할 수 있습니다.
             // 예시: quests.Add(new Quest("퀘스트 이름", "퀘스트 설명", 퀘스트 번호, 목표량));
-            quests.Add(new Quest("마을을 위협하는 미니언 처치", "미니언을 처치하여 마을을 지키세요.", 1, 5));
-            quests.Add(new Quest("장비를 장착해보자", "장비를 장착하여 더 강해지세요.", 2, 1));
-            quests.Add(new Quest("더욱 더 강해지기!", "더욱 강력한 장비를 얻어라.", 3, 1));
+            quests.Add(new Quest("마을을 위협하는 미니언 처치", "미니언을 처치하여 마을을 지키세요.", 1, 10));
+            quests.Add(new Quest("더욱 더 강해지기!", "Lv4달성.", 2, 4));
         }
 
         // 퀘스트 메뉴 표시
@@ -174,36 +173,32 @@ namespace TRPGTest
                 }   
             }
         }
-        //public void InventoryMounting(Inventory inventory)
-        //{
-        //    foreach (var quest in quests)
-        //    {
-        //        if (quest.ID == 2)
-        //        {
-        //            if (inventory.itemSA)
-        //            {
-        //                quest.IsAccepted = true; // 퀘스트를 수락한 것으로 표시합니다.
-        //                Console.WriteLine($"퀘스트 '{quest.Name}'를 완료하셨습니다!");
-        //                Console.WriteLine("보상을 받으세요!");
-        //                GiveQuestReward(); // 퀘스트 보상을 주는 메서드를 호출합니다.
-        //                Console.ReadKey();
-        //            }
-        //        }
-        //    }
-        //}
+        public void leveltest(Player player)
+        {
+            foreach (var quest in quests)
+            {
+                if (quest.ID == 2)
+                {
+                    if (player.LV>4)
+                    {
+                        quest.IsAccepted = true; // 퀘스트를 수락한 것으로 표시합니다.
+                        Console.WriteLine($"퀘스트 '{quest.Name}'를 완료하셨습니다!");
+                        Console.WriteLine("보상을 받으세요!");
+                        GiveQuestReward(); // 퀘스트 보상을 주는 메서드를 호출합니다.
+                        Console.ReadKey();
+                    }
+                }
+            }
+        }
 
 
         // 퀘스트 보상 주는 메서드
         private void GiveQuestReward()
         {
             Player player = new Player();
-            int gold = rand.Next(500, 1501);
+            int gold = rand.Next(1500,5001);
             Console.WriteLine($"골드를 {gold}G 얻었습니다!");
-            Console.WriteLine($"레벨이 1 올랐습니다!");
             player.Gold += gold;
-            player.LV++;
-            player.Attack += 1; // 공격력 증가
-            player.Defense += 2; // 방어력 증가
             Console.ReadKey();
         }
     }

@@ -321,6 +321,7 @@ namespace TRPGTest
             if (input == "1")
             {
                 AttackMonster(player, monsters);
+                quest.leveltest(player);
             }
             else if (input == "2")
             {
