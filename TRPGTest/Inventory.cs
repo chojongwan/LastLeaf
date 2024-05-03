@@ -30,7 +30,7 @@ namespace TRPGTest
 
                     while (input != "0")
                     {
-                        Console.Write("원하시는 행동을 입력해 주세요.\n>> ");
+                        Console.Write("원하시는 행동을 입력해 주세요.\n> ");
                         input = Console.ReadLine();
 
                         if (input == "-" || input == "_")
@@ -59,7 +59,7 @@ namespace TRPGTest
 
                     while (input != "0")
                     {
-                        Console.Write("원하시는 행동을 입력해 주세요.\n>> ");
+                        Console.Write("원하시는 행동을 입력해 주세요.\n> ");
                         input = Console.ReadLine();
 
                         if (input == "-" || input == "_")
@@ -82,9 +82,6 @@ namespace TRPGTest
                             else
                             {
                                 EquipItem(selected, player);  // 선택한 아이템 장착
-                                Console.WriteLine($"{selected.Name}을(를) 장착했습니다. 아무 키나 누르시면 새로고침됩니다.");
-                                Console.ReadKey();
-                                ShowInventory(player);
                             }
                         }
                         else if (input != "0")
@@ -134,6 +131,10 @@ namespace TRPGTest
                             player.Defense += GetEffectValue(selected.Effect);
                             break;
                     }
+
+                    Console.WriteLine($"{selected.Name}을(를) 장착했습니다. 아무 키나 누르시면 새로고침됩니다.");
+                    Console.ReadKey();
+                    ShowInventory(player);
                 }
             }
         }
@@ -174,7 +175,7 @@ namespace TRPGTest
 
                     while (input != "0")
                     {
-                        Console.Write("원하시는 행동을 입력해 주세요.\n>> ");
+                        Console.Write("원하시는 행동을 입력해 주세요.\n> ");
                         input = Console.ReadLine();
 
                         if (input != "0")
@@ -196,7 +197,7 @@ namespace TRPGTest
 
                     while (input != "0")
                     {
-                        Console.Write("원하시는 행동을 입력해 주세요.\n>> ");
+                        Console.Write("원하시는 행동을 입력해 주세요.\n> ");
                         input = Console.ReadLine();
 
                         if (int.TryParse(input, out int selectedIndex) && selectedIndex > 0 && selectedIndex <= player.Backpack.Count)        //selectedIndex 인벤토리에서 해당 아이템을 찾을때 사용 (out 인자를 사용)
