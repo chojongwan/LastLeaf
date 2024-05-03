@@ -171,9 +171,26 @@ namespace TRPGTest
                         GiveQuestReward(); // 퀘스트 보상을 주는 메서드를 호출합니다.
                         Console.ReadKey();
                     }
-                }
+                }   
             }
         }
+        //public void InventoryMounting(Inventory inventory)
+        //{
+        //    foreach (var quest in quests)
+        //    {
+        //        if (quest.ID == 2)
+        //        {
+        //            if (inventory.itemSA)
+        //            {
+        //                quest.IsAccepted = true; // 퀘스트를 수락한 것으로 표시합니다.
+        //                Console.WriteLine($"퀘스트 '{quest.Name}'를 완료하셨습니다!");
+        //                Console.WriteLine("보상을 받으세요!");
+        //                GiveQuestReward(); // 퀘스트 보상을 주는 메서드를 호출합니다.
+        //                Console.ReadKey();
+        //            }
+        //        }
+        //    }
+        //}
 
 
         // 퀘스트 보상 주는 메서드

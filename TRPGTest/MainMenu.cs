@@ -44,7 +44,7 @@ namespace TRPGTest
             Type = type;
         }
     }
-
+    
 
     public class MainMenu
     {
@@ -55,15 +55,20 @@ namespace TRPGTest
         };
 
         Status showStatus = new Status();
-        Inventory inventory = new Inventory();
+        Inventory inventory;
         Shop shop = new Shop();
-        Dungeon dungeon = new Dungeon();
-        Rest rest = new Rest();
         QuestManager questManager = new QuestManager();
+        Dungeon dungeon;
+        Rest rest = new Rest();
+        
         Player player = new Player();   // 플레이어 객체 생성
+
 
         public void CreatePlayer()  // 사용자 이름 설정
         {
+            dungeon = new Dungeon(questManager); //
+            inventory = new Inventory(questManager);
+
             Console.Clear();
             Console.WriteLine("환영합니다! 캐릭터를 생성해주세요.");
             Console.WriteLine("캐릭터 이름을 입력해주세요.");

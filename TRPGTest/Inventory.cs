@@ -2,16 +2,23 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
+using System.Reflection.Metadata;
 using System.Text;
 using System.Threading.Tasks;
+using static TRPGTest.Dungeon;
 
 namespace TRPGTest
 {
     internal class Inventory
     {
         string input = "";
+        //QuestManager questManager = new QuestManager();
+        QuestManager quest;
 
-
+        public Inventory(QuestManager questManager)
+        {
+            quest = questManager;
+        }
         // 인벤토리 표시 메서드
         public void ShowInventory(Player player)
         {
@@ -93,10 +100,12 @@ namespace TRPGTest
             }
         }
 
-
+        public bool itemSA=false;
         // 아이템 장착 메서드
         public void EquipItem(Item selected, Player player)
         {
+            //itemSA=true;
+            // quest.InventoryMounting(1);
             if (selected.IsEquipped)  // 다른 코드에서 중복 장착 방지용, 이미 장착된 아이템일 시 장착 해제
             {
                 UnequipItem(selected, player);

@@ -10,7 +10,6 @@ namespace TRPGTest
         {
             public string MonsterName { get; set; } // 몬스터 이름
             public int MonsterLV { get; set; } // 몬스터 레벨
-
             public int MonsterHP { get; set; } // 몬스터 체력
             public int AttackMonster { get; set; } // 몬스터 공격력
             public bool MonsterDie { get; set; } // 몬스터 생사구분
@@ -21,7 +20,7 @@ namespace TRPGTest
         public int monsterCount = 0;
         List<Monster> monsters; // 몬스터 리스트
         public Random rand = new Random();
-        QuestManager quest = new QuestManager();
+        QuestManager quest;
         // 랜덤 몬스터 생성 메서드
         public Monster CreateRandomMonster()
         {
@@ -90,9 +89,10 @@ namespace TRPGTest
             return newMonster;
 
         }
-        public Dungeon()
+        public Dungeon(QuestManager questManager)
         {
             monsters = new List<Monster>(); // 몬스터 리스트 초기화
+            quest=questManager;
         }
 
         public void ShowDungeon(Player player)
