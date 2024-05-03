@@ -90,7 +90,6 @@ namespace TRPGTest
             }
         }
 
-
         // 선택한 퀘스트의 상세 정보 표시
         private void ShowQuestDetails(int index)
         {
@@ -104,12 +103,16 @@ namespace TRPGTest
             {
                 Console.WriteLine("퀘스트를 이미 완료하셨습니다.");
             }
+            else if (quests[index].IsAccepted)
+            {
+                Console.WriteLine("이미 수락한 퀘스트입니다.");
+            }
             else
             {
                 Console.WriteLine("1. 퀘스트 수락");
             }
 
-            Console.WriteLine("2. 메인 메뉴로 돌아가기");
+            Console.WriteLine("2. 뒤로가기");
             Console.WriteLine("\n원하시는 행동을 입력해주세요.");
 
             string input = Console.ReadLine();
@@ -117,11 +120,20 @@ namespace TRPGTest
             {
                 case "1":
                     // 퀘스트 수락
-                    AcceptQuest(index);
-                    ShowQuests();
+                    if (!quests[index].IsAccepted)
+                    {
+                        AcceptQuest(index);
+                        ShowQuests();
+                    }
+                    else
+                    {
+                        Console.WriteLine("이미 수락한 퀘스트입니다.");
+                        Console.ReadKey();
+                        ShowQuestDetails(index);
+                    }
                     break;
                 case "2":
-                    // 메인 메뉴로 돌아가기
+                    ShowQuests();
                     break;
                 default:
                     Console.WriteLine("잘못된 입력입니다.");
@@ -130,6 +142,7 @@ namespace TRPGTest
                     break;
             }
         }
+
 
         // 퀘스트 수락 메서드
         private void AcceptQuest(int index)
