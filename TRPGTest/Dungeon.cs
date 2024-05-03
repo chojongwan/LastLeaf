@@ -372,7 +372,7 @@ namespace TRPGTest
             {
                 Console.WriteLine("이미 죽은 몬스터를 공격할 수 없습니다.");
                 Console.ReadKey();
-                return;
+                StartBattle(player);
             }
 
             // 몬스터 공격 if문으로 치명타를 설정가능
@@ -479,14 +479,14 @@ namespace TRPGTest
             Console.WriteLine("2. 더블 스트라이크 - MP 15");
             Console.WriteLine("공격력 * 1.5 로 두 명의 랜덤한 적을 공격합니다.");
             Console.WriteLine("0. 취소");
-            int select = int.Parse(Console.ReadLine());
-            if (select == 1)
+            string select = Console.ReadLine();
+            if (select == "1")
             {
                 //스킬 MP 
                 AlphaStrike(player, monsters);
                 player.MP -= 10;
             }
-            else if (select == 2)
+            else if (select == "2")
             {
                 DoubleStrike(player, monsters);
                 player.MP -= 15;
@@ -564,8 +564,6 @@ namespace TRPGTest
                     quest.MonsterDies(player);
                 }
             }
-
-
             Console.ReadKey();
             EnemyPhase(player, monsters);
 
