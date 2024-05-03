@@ -5,9 +5,9 @@
         // 메인 메서드
         public static void Main(string[] args)
         {
-            mainMinu.ShowMainMenu();
+            mainMenu.ShowMainMenu();
         }
 
-        static MainMenu mainMinu = new MainMenu();
+        static MainMenu mainMenu = new MainMenu();
     }
 }
