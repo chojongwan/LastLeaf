@@ -125,7 +125,7 @@ namespace TRPGTest
         public void ShowMainMenu()
         {
             CreatePlayer();
-
+            
             player.Backpack.Add(potionItems[0]);
             potionItems[0].Amount = 3;  // 소모품 전용 인벤토리 player.BackPack 에 회복 아이템 3개 추가
 

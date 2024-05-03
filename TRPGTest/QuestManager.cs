@@ -26,7 +26,7 @@ namespace TRPGTest
                 Description = description;
                 ID = id;
                 Goal = goal;
-                Progress = 0;
+                Progress=0;
                 IsAccepted = false; // 처음에는 수락되지 않은 상태로 초기화
             }
         }
@@ -147,7 +147,8 @@ namespace TRPGTest
             {
                 if (quest.ID == 1) // 마을을 위협하는 미니언 처치 퀘스트의 ID가 1이라고 가정합니다.
                 {
-                    quest.Progress = player.DungeonClearCount;
+                    quest.Progress++ ;
+                    Console.WriteLine(quest.Progress);
                     //quest.Progress++; // 퀘스트 진행 상황을 증가시킵니다.
                     if (player.DungeonClearCount == quest.Goal) // 퀘스트의 진행 상황이 목표량에 도달하면
                     {
