@@ -10,7 +10,7 @@ namespace TRPGTest
     internal class Shop
     {
         string input = "";
-        static Inventory inventory = new Inventory();
+        static Inventory inventory = new Inventory(null);
 
         // 상점의 아이템 목록
         static Item[] shopItems = new Item[]
