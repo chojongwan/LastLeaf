@@ -616,7 +616,7 @@ namespace TRPGTest
                 player.LV++;
                 player.Attack += 1; // 공격력 증가
                 player.Defense += 2; // 방어력 증가
-
+                quest.LerverUp(player);
                 Console.WriteLine($"{player.Name}의 레벨이 올랐습니다! [현재 레벨: {player.LV}, 공격력: {player.Attack}, 방어력: {player.Defense}]");
             }
 
