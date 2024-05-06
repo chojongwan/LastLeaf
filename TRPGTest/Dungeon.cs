@@ -26,8 +26,7 @@ namespace TRPGTest
         }
 
         string input = "";
-        int target1;
-        int target2;
+        bool cleared = false;
         public int monsterDieCount = 0;
         public int stage = 0;
         public int monsterCount = 0;
@@ -102,6 +101,8 @@ namespace TRPGTest
 
             return newMonster;
         }
+
+
         public Dungeon(QuestManager questManager)
         {
             monsters = new List<Monster>(); // 몬스터 리스트 초기화
@@ -123,6 +124,8 @@ namespace TRPGTest
                 Console.WriteLine($"보유 골드: {player.Gold} G\n");
 
                 Console.WriteLine("1. 전투 시작");
+                if (cleared)
+                    Console.WriteLine("-. 클리어 화면");
                 Console.WriteLine("0. 나가기\n");
 
                 while (input != "0" && input != "1")
@@ -133,6 +136,11 @@ namespace TRPGTest
                     if (input == "1")
                     {
                         StartBattle(player);  // 전투 시작
+                        input = "1";
+                    }
+                    if (input == "-" && cleared)
+                    {
+                        GameClear();
                         input = "1";
                     }
                     if (input == "0")
@@ -304,10 +312,6 @@ namespace TRPGTest
                         monsters.Add(CreateRandomMonster());
                         monsterDieCount++;
                     }
-                    else if(stage > 15)
-                    {
-                        GameClear();
-                    }
                     else
                     {
                         // 몬스터 랜덤 등장 (1~4마리)
@@ -336,6 +340,7 @@ namespace TRPGTest
                 for (int i = 0; i < monsterCount; i++)
                 {
                     // 간혹 체력이 0 미만인데도 죽지 않은 몬스터가 보이는데, 아마 진행에 지장 없이 한 대 때리면 죽으니 확률성 이스터에그처럼 땜빵합니다.
+                    // 몬스터가 죽지 않는 버그는 해결했지만 만에 하나를 위해 + 이런 버그가 있었다는 기록 삼아 남겨둡니다.
                     string monsterStatus = monsters[i].MonsterHP < 0 ? " (유령)" : "";
 
                     Console.WriteLine($"{i + 1}. Lv.{monsters[i].MonsterLV} {monsters[i].MonsterName}{monsterStatus} | HP {monsters[i].MonsterHP}");
@@ -343,7 +348,6 @@ namespace TRPGTest
 
                 Console.WriteLine("\n1. 공격");
                 Console.WriteLine("2. 스킬");
-                // Console.WriteLine("3. 다음 층으로");
                 Console.WriteLine("0. 도망치기 (공격 회피율 상승)\n");
 
                 while (input != "0" && input != "1" && input != "2")  // 플레이어 행동 입력
@@ -537,42 +541,39 @@ namespace TRPGTest
             player.MP -= 15;
             double dsAttack = player.Attack * 1.5;
 
-            // 죽지 않은 몬스터만 대상으로 지정
-            List<Monster> dsMonsters = new List<Monster>();
-            Dictionary<int, int> listMatch = new Dictionary<int, int>();  // Key - dsMonsters 인덱스, Value - monsters 인덱스
-            int dsCount = 0;
-
-            for (int i = 0; i < monsterCount; i++)
-            {
-                if (!monsters[i].MonsterDie)
-                {
-                    dsMonsters.Add(monsters[i]);
-                    listMatch.Add(dsCount, i);
-                    dsCount++;
-                }
-            }
-
             // 공격 진행
             Console.WriteLine("랜덤한 대상 둘을 공격합니다.");
             Console.WriteLine($"\n{player.Name}의 더블 스트라이크!");
 
             for (int i = 0; i < 2; i++)
             {
+                Dictionary<int, int> listMatch = new Dictionary<int, int>();
+                // Dictionary Key - dsMonsters 인덱스, Value - monsters 인덱스
+                int dsCount = 0;
+
+                for (int a = 0; a < monsterCount; a++)
+                {
+                    if (!monsters[a].MonsterDie)  // 죽지 않은 몬스터만 대상으로 지정
+                    {
+                        listMatch.Add(dsCount, a);
+                        dsCount++;
+                    }
+                }
+
                 int j = rand.Next(0, monsterDieCount);
 
-                dsMonsters[j].MonsterHP -= (int)dsAttack;
-                Console.WriteLine($"{dsMonsters[j].MonsterName}에게 {(int)dsAttack}만큼의 피해를 입혔습니다.");
+                monsters[listMatch[j]].MonsterHP -= (int)dsAttack;
+                Console.WriteLine($"{monsters[listMatch[j]].MonsterName}에게 {(int)dsAttack}만큼의 피해를 입혔습니다.");
                 Console.ReadKey(true);
 
                 // 몬스터가 죽은 경우 체크
-                if (dsMonsters[j].MonsterHP <= 0)
+                if (monsters[listMatch[j]].MonsterHP <= 0)
                 {
-                    // 여기에 dsMonsters 가 아니라 monsters 리스트의 인덱스를 넣기 위해 Dictionary 사용
+                    // 여기에 monsters 리스트의 인덱스를 넣기 위해 Dictionary 사용
                     MonsterDead(player, listMatch[j]);
-                    dsMonsters.Remove(dsMonsters[j]);  // 이미 죽은 몬스터를 공격하지 않도록
                 }
 
-                if (monsterDieCount < 1)  // 도중에 몬스터를 전부 처치했을 경우 중단
+                if (monsterDieCount <= 0)  // 도중에 몬스터를 전부 처치했을 경우 중단
                     break;
             }
             EnemyPhase(player, monsters, Act.Fight);
@@ -601,12 +602,13 @@ namespace TRPGTest
                 player.Attack += 1; // 공격력 증가
                 player.Defense += 2; // 방어력 증가
                 quest.LerverUp(player);
-                Console.WriteLine($"{player.Name}의 레벨이 올랐습니다! [현재 레벨: {player.LV}, 공격력: {player.Attack}, 방어력: {player.Defense}]");
+                Console.WriteLine($"{player.Name}의 레벨이 올랐습니다! (현재 레벨: {player.LV}, 공격력: {player.Attack}, 방어력: {player.Defense})");
             }
 
             // 퀘스트 체크
             quest.MonsterDies(player);
 
+            Console.WriteLine();
             Console.ReadKey(true);
         }
 
@@ -775,16 +777,18 @@ namespace TRPGTest
         // 게임 클리어 메서드
         public void GameClear()
         {
+            cleared = true;
             Console.Clear();
             Console.WriteLine(@"
-      ::::::::           :::          :::   :::       ::::::::::        ::::::::       :::        ::::::::::           :::        :::::::::         :::::   :::       :::       ::: 
-    :+:    :+:        :+: :+:       :+:+: :+:+:      :+:              :+:    :+:      :+:        :+:                :+: :+:      :+:    :+:      :+:   :+:+:         :+:       :+:  
-   +:+              +:+   +:+     +:+ +:+:+ +:+     +:+              +:+             +:+        +:+               +:+   +:+     +:+    +:+                          +:+       +:+   
-  :#:             +#++:++#++:    +#+  +:+  +#+     +#++:++#         +#+             +#+        +#++:++#         +#++:++#++:    +#++:++#:                           +#+       +#+    
- +#+   +#+#      +#+     +#+    +#+       +#+     +#+              +#+             +#+        +#+              +#+     +#+    +#+    +#+                          +#+       +#+     
-#+#    #+#      #+#     #+#    #+#       #+#     #+#              #+#    #+#      #+#        #+#              #+#     #+#    #+#    #+#                                             
-########       ###     ###    ###       ###     ##########        ########       ########## ##########       ###     ###    ###    ###                          ###       ###       
+      :::::::      :::       :::   :::   ::::::::       :::::::  :::      ::::::::     :::     :::::::::   :::  ::: 
+    :+:   :+:   :+: :+:    :+:+: :+:+:  :+:           :+:   :+: :+:      :+:        :+: :+:   :+:    :+:  :+:  :+:  
+   +:+        +:+   +:+  +:+ +:+:+ +:+ +:+           +:+       +:+      +:+       +:+   +:+  +:+    +:+  +:+  +:+   
+  :#:       +#++:++#++: +#+  +:+  +#+ +#++:++#      +#+       +#+      +#++:++# +#++:++#++: +#++:++#:   +#+  +#+    
+ +#+  +#+# +#+     +#+ +#+       +#+ +#+           +#+       +#+      +#+      +#+     +#+ +#+    +#+  +#+  +#+     
+#+#   #+# #+#     #+# #+#       #+# #+#           #+#   #+# #+#      #+#      #+#     #+# #+#    #+#                    
+#######  ###     ### ###       ### ########       #######  ######## ######## ###     ### ###    ###  ###  ###       
 ");
+            Console.WriteLine();
             Console.WriteLine("축하합니다, 스파르타 던전을 클리어하셨습니다!");
             Console.WriteLine("당신은 던전의 끝에서 '플레이해 주셔서 감사합니다. code: allmaster'라는 글귀를 찾았습니다.\n");
 

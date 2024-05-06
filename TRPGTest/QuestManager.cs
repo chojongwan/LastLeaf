@@ -46,8 +46,8 @@ namespace TRPGTest
         {
             // 여기에 퀘스트를 추가할 수 있습니다.
             // 예시: quests.Add(new Quest("퀘스트 이름", "퀘스트 설명", 퀘스트 번호, 목표량));
-            quests.Add(new Quest("마을을 위협하는 미니언 처치", "미니언을 처치하여 마을을 지키세요.", 1, 10));
-            quests.Add(new Quest("더욱 더 강해지기!", "Lv4달성.", 2, 4));
+            quests.Add(new Quest("마을을 위협하는 몬스터 처치", "몬스터를 처치하여 마을을 지키세요.", 1, 10));
+            quests.Add(new Quest("더욱 더 강해지기!", "Lv 4 달성.", 2, 4));
         }
 
         // 퀘스트 메뉴 표시
@@ -75,7 +75,7 @@ namespace TRPGTest
 
             Console.WriteLine("\n원하시는 퀘스트를 선택해주세요.");
             Console.WriteLine("-. 퀘스트 완료하기");
-            Console.WriteLine("0. 뒤로가기");
+            Console.WriteLine("0. 뒤로 가기");
 
             string input = Console.ReadLine();
 
@@ -117,7 +117,7 @@ namespace TRPGTest
             {
                 Console.WriteLine("1. 퀘스트 수락");
             }
-            Console.WriteLine("0. 뒤로가기");
+            Console.WriteLine("0. 뒤로 가기");
             Console.WriteLine("\n원하시는 행동을 입력해주세요.");
 
             string input = Console.ReadLine();

@@ -72,7 +72,7 @@ namespace TRPGTest
             inventory = new Inventory(questManager);
 
             Console.Clear();
-            Console.WriteLine("환영합니다! 캐릭터를 생성해주세요.");
+            Console.WriteLine("새로운 캐릭터를 생성합니다.\n");
             Console.WriteLine("캐릭터 이름을 입력해주세요.");
             Console.Write("> ");
             player.Name = Console.ReadLine();
@@ -91,7 +91,7 @@ namespace TRPGTest
 
             Console.Clear();
             Console.WriteLine($"환영합니다, {player.Name} 님!");
-            Console.WriteLine("직업을 선택해주세요.\n");
+            Console.WriteLine($"캐릭터 직업을 선택해주세요.\n");
             Console.WriteLine("1. 전사 | 기본 공격력 4, 방어력 6");
             Console.WriteLine("2. 궁수 | 기본 공격력 5, 방어력 5");
             Console.WriteLine("3. 마법사 | 기본 공격력 6, 방어력 4\n");
@@ -127,6 +127,11 @@ namespace TRPGTest
                         break;
                 }
             }
+
+            Console.WriteLine("\n[캐릭터 정보]");
+            Console.WriteLine($"이름: {player.Name}\n직업: {player.Job}");
+            Console.WriteLine("\n인벤토리의 소모품 가방에 체력 포션 3개가 지급되었습니다!");
+            Console.ReadKey(true);
         }
 
         public void ShowMainMenu()
@@ -151,20 +156,19 @@ $$ |  $$ |$$  __$$ |$$ | $$ | $$ |$$   ____|      $$\   $$ |  $$ |$$\ $$  __$$ |
 \$$$$$$  |\$$$$$$$ |$$ | $$ | $$ |\$$$$$$$\       \$$$$$$  |  \$$$$  |\$$$$$$$ |$$ |       \$$$$  |      $$\       $$\ 
  \______/  \_______|\__| \__| \__| \_______|       \______/    \____/  \_______|\__|        \____/       \__|      \__|
                                                                                                                        
-                                                                                                                       
                                                                                                                        ");                                          //시작할때 로고
                 Console.WriteLine($"{player.Name} 님! 스파르타 마을에 오신 것을 환영합니다.");
                 Console.WriteLine("이곳에서 던전으로 들어가기 전 활동을 할 수 있습니다.\n");
-                Console.WriteLine("0. 게임 종료");
                 Console.WriteLine("1. 상태 보기");
                 Console.WriteLine("2. 인벤토리");
-                Console.WriteLine("3. 상점");
+                Console.WriteLine("3. 상점\n");
                 Console.WriteLine("4. 던전");
                 Console.WriteLine("5. 휴식하기");
                 Console.WriteLine("6. 퀘스트\n");
 
                 Console.WriteLine("7. 저장하기");
-                Console.WriteLine("8. 불러오기\n");
+                Console.WriteLine("8. 불러오기");
+                Console.WriteLine("0. 게임 종료\n");
 
                 while (input != "0" && input != "1" && input != "2" && input != "3" && input != "4" &&
                     input != "5" && input != "6" && input != "7" && input != "8")
