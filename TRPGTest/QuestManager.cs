@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Numerics;
 using static TRPGTest.QuestManager;
 
 namespace TRPGTest
@@ -26,7 +27,7 @@ namespace TRPGTest
                 Description = description;
                 ID = id;
                 Goal = goal;
-                Progress=0;
+                Progress = 0;
                 IsAccepted = false; // 처음에는 수락되지 않은 상태로 초기화
             }
         }
@@ -45,12 +46,12 @@ namespace TRPGTest
         {
             // 여기에 퀘스트를 추가할 수 있습니다.
             // 예시: quests.Add(new Quest("퀘스트 이름", "퀘스트 설명", 퀘스트 번호, 목표량));
-            quests.Add(new Quest("마을을 위협하는 미니언 처치", "미니언을 처치하여 마을을 지키세요.", 1, 10));
+            quests.Add(new Quest("마을을 위협하는 미니언 처치", "미니언을 처치하여 마을을 지키세요.", 1, 2));
             quests.Add(new Quest("더욱 더 강해지기!", "Lv4달성.", 2, 4));
         }
 
         // 퀘스트 메뉴 표시
-        public void ShowQuests()
+        public void ShowQuests(Player player)
         {
             Console.Clear();
             Console.WriteLine("**Quest!!**\n");
@@ -73,24 +74,31 @@ namespace TRPGTest
             }
 
             Console.WriteLine("\n원하시는 퀘스트를 선택해주세요.");
+            Console.WriteLine("-. 퀘스트 완료하기");
             Console.WriteLine("0. 뒤로가기");
 
             string input = Console.ReadLine();
 
             int questIndex;
+
             if (int.TryParse(input, out questIndex) && questIndex >= 1 && questIndex <= quests.Count)
             {
                 // 선택한 퀘스트의 상세 정보 표시
-                ShowQuestDetails(questIndex - 1);
+                ShowQuestDetails(player, questIndex - 1);
+            }
+            else if (input == "-")
+            {
+                Compensation(player);
             }
             else
             {
-                //ShowQuests();
+                Console.WriteLine("잘못된 입력입니다.");
+                ShowQuests(player);
             }
         }
 
         // 선택한 퀘스트의 상세 정보 표시
-        private void ShowQuestDetails(int index)
+        private void ShowQuestDetails(Player player, int index)
         {
             Console.Clear();
             Console.WriteLine("**Quest!!**\n");
@@ -110,8 +118,7 @@ namespace TRPGTest
             {
                 Console.WriteLine("1. 퀘스트 수락");
             }
-
-            Console.WriteLine("2. 뒤로가기");
+            Console.WriteLine("0. 뒤로가기");
             Console.WriteLine("\n원하시는 행동을 입력해주세요.");
 
             string input = Console.ReadLine();
@@ -122,21 +129,21 @@ namespace TRPGTest
                     if (!quests[index].IsAccepted)
                     {
                         AcceptQuest(index);
-                        ShowQuests();
+                        ShowQuests(player);
                     }
                     else
                     {
                         Console.WriteLine("이미 수락한 퀘스트입니다.");
                         Console.ReadKey();
-                        ShowQuestDetails(index);
+                        ShowQuestDetails(player, index);
                     }
                     break;
-                case "2":
-                    ShowQuests();
+                case "0":
+                    ShowQuests(player);
                     break;
                 default:
                     Console.WriteLine("잘못된 입력입니다.");
-                    ShowQuestDetails(index);
+                    ShowQuestDetails(player, index);
                     Console.ReadKey();
                     break;
             }
@@ -159,26 +166,28 @@ namespace TRPGTest
             {
                 if (quest.ID == 1) // 마을을 위협하는 미니언 처치 퀘스트의 ID가 1이라고 가정합니다.
                 {
-                    quest.Progress++ ;
-                    // 퀘스트 진행 상황을 증가시킵니다.
-                    if (player.DungeonClearCount == quest.Goal) // 퀘스트의 진행 상황이 목표량에 도달하면
-                    {
-                        quest.IsAccepted = true; // 퀘스트를 수락한 것으로 표시합니다.
-                        Console.WriteLine($"퀘스트 '{quest.Name}'를 완료하셨습니다!");
-                        Console.WriteLine("보상을 받으세요!");
-                        GiveQuestReward(); // 퀘스트 보상을 주는 메서드를 호출합니다.
-                        Console.ReadKey();
-                    }
-                }   
+                    quest.Progress++;
+                }
             }
         }
-        public void leveltest(Player player)
+        public void LerverUp(Player player)
         {
             foreach (var quest in quests)
             {
-                if (quest.ID == 2)
+                if (quest.ID == 2) // 마을을 위협하는 미니언 처치 퀘스트의 ID가 1이라고 가정합니다.
                 {
-                    if (player.LV>4)
+                    quest.Progress++;
+                }
+            }
+        }
+        public void Compensation(Player player)
+        {
+            foreach (var quest in quests)
+            {
+                if (quest.ID == 1) // 마을을 위협하는 미니언 처치 퀘스트의 ID가 1이라고 가정합니다.
+                {
+                    // 퀘스트 진행 상황을 증가시킵니다.
+                    if (player.DungeonClearCount >= quest.Goal) // 퀘스트의 진행 상황이 목표량에 도달하면
                     {
                         quest.IsAccepted = true; // 퀘스트를 수락한 것으로 표시합니다.
                         Console.WriteLine($"퀘스트 '{quest.Name}'를 완료하셨습니다!");
@@ -187,18 +196,28 @@ namespace TRPGTest
                         Console.ReadKey();
                     }
                 }
-            }
+                else if (quest.ID == 2)
+                {
+                    if (player.LV >= 4)
+                    {
+                        quest.IsAccepted = true; // 퀘스트를 수락한 것으로 표시합니다.
+                        Console.WriteLine($"퀘스트 '{quest.Name}'를 완료하셨습니다!");
+                        Console.WriteLine("보상을 받으세요!");
+                        GiveQuestReward(); // 퀘스트 보상을 주는 메서드를 호출합니다.
+                        Console.ReadKey();
+                    }
+                }
+            } 
         }
-
-
         // 퀘스트 보상 주는 메서드
-        private void GiveQuestReward()
+        public void GiveQuestReward()
         {
             Player player = new Player();
-            int gold = rand.Next(1500,5001);
+            int gold = rand.Next(1500, 5001);
             Console.WriteLine($"골드를 {gold}G 얻었습니다!");
             player.Gold += gold;
             Console.ReadKey();
         }
     }
 }
+

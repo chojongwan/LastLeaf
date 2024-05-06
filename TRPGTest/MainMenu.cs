@@ -1,4 +1,5 @@
 ﻿using System.Threading;
+using static TRPGTest.QuestManager;
 
 namespace TRPGTest
 {
@@ -44,7 +45,7 @@ namespace TRPGTest
             Type = type;
         }
     }
-    
+
 
     public class MainMenu
     {
@@ -58,9 +59,10 @@ namespace TRPGTest
         Inventory inventory;
         Shop shop = new Shop();
         QuestManager questManager = new QuestManager();
+
         Dungeon dungeon;
         Rest rest = new Rest();
-        
+
         Player player = new Player();   // 플레이어 객체 생성
 
 
@@ -130,7 +132,7 @@ namespace TRPGTest
         public void ShowMainMenu()
         {
             CreatePlayer();
-            
+
             player.Backpack.Add(potionItems[0]);
             potionItems[0].Amount = 3;  // 소모품 전용 인벤토리 player.BackPack 에 회복 아이템 3개 추가
 
@@ -191,7 +193,7 @@ $$ |  $$ |$$  __$$ |$$ | $$ | $$ |$$   ____|      $$\   $$ |  $$ |$$\ $$  __$$ |
                             rest.GoRest(player);
                             break;
                         case "6":
-                            questManager.ShowQuests();
+                            questManager.ShowQuests(player);
                             break;
                         case "7":
                             Save Save = new Save();
