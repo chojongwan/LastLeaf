@@ -304,6 +304,10 @@ namespace TRPGTest
                         monsters.Add(CreateRandomMonster());
                         monsterDieCount++;
                     }
+                    else if(stage > 15)
+                    {
+                        GameClear();
+                    }
                     else
                     {
                         // 몬스터 랜덤 등장 (1~4마리)
@@ -449,26 +453,6 @@ namespace TRPGTest
             double error = rand.NextDouble() * 0.2 - 0.1;  // -0.1부터 0.1까지의 오차
             int finalDamage = (int)Math.Ceiling(attack * (1.5 + error));  // 최종 공격력 계산 (오차 적용)
             return finalDamage;
-
-            // 대미지 계산 메서드 안에서 치명타 여부를 판별할 때 사용
-            /*
-            int critical = new Random().Next(1, 100);
-            int criticalDamage = 0;
-
-            bool isCritical = false;
-            if (critical >= 15)
-            {
-                isCritical = true;
-                double newCriticalattack = attack * 1.6;
-                criticalDamage = (int)Math.Round(newCriticalattack);
-            }
-            else
-            {
-                isCritical = false;
-            }
-            int intCriticalDamage = (int)criticalDamage;
-            return intCriticalDamage;
-            */
         }
 
 

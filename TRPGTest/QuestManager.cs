@@ -46,7 +46,7 @@ namespace TRPGTest
         {
             // 여기에 퀘스트를 추가할 수 있습니다.
             // 예시: quests.Add(new Quest("퀘스트 이름", "퀘스트 설명", 퀘스트 번호, 목표량));
-            quests.Add(new Quest("마을을 위협하는 미니언 처치", "미니언을 처치하여 마을을 지키세요.", 1, 2));
+            quests.Add(new Quest("마을을 위협하는 미니언 처치", "미니언을 처치하여 마을을 지키세요.", 1, 10));
             quests.Add(new Quest("더욱 더 강해지기!", "Lv4달성.", 2, 4));
         }
 
@@ -93,7 +93,6 @@ namespace TRPGTest
             else
             {
                 Console.WriteLine("잘못된 입력입니다.");
-                ShowQuests(player);
             }
         }
 
